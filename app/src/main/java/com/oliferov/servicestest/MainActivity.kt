@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.oliferov.servicestest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -56,8 +58,20 @@ class MainActivity : AppCompatActivity() {
                 val intent = MyJobService.newIntent(page++)
                 jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
             } else {
-                startService(MyIntentService2.newIntent(this,page++))
+                startService(MyIntentService2.newIntent(this, page++))
             }
+
+        }
+        binding.buttonJobIntentService.setOnClickListener {
+            MyJobIntentService.enqueue(this, page++)
+        }
+        binding.buttonWorkManager.setOnClickListener {
+            val workManager = WorkManager.getInstance(applicationContext)
+            workManager.enqueueUniqueWork(
+                MyWorker.WORK_NAME,
+                ExistingWorkPolicy.APPEND,
+                MyWorker.makeRequest(page++)
+            )
 
         }
     }

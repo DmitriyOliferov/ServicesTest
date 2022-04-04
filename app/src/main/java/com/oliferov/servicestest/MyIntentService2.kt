@@ -32,7 +32,7 @@ class MyIntentService2: IntentService(NAME) {
     }
 
     private fun log(message: String) {
-        Log.i("SERVICE_TAG", "MyForegroundService: $message")
+        Log.i("SERVICE_TAG", "MyIntentService2: $message")
     }
 
 
